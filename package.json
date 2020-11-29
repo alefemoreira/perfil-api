@@ -1,0 +1,22 @@
+{
+  "name": "perfil-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:alefemoreira/perfil-api.git",
+  "author": "alefemoreira <alefe@fab.work>",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "ts-node-dev --ignore-watch node_modules --respawn --transpile-only src/server.ts"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.17"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/mongoose": "^5.10.1",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.1.2"
+  }
+}
