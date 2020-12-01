@@ -15,7 +15,9 @@ export default class SessionController {
     }
 
     if (!(await user.checkPassword(password))) {
-      return res.status(400).json({ message: "Password incorrect" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: "Password is incorrect" });
     }
 
     return res.json({

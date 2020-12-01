@@ -1,11 +1,39 @@
 import { Response, Request } from "express";
+import { iRequest } from "../app/middlewares/auth";
 import User from "../app/models/UserSchema";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
 
 export default class UserController {
-  update(req: Request, res: Response) {
+  index(req: Request, res: Response) {
     res.json({ message: "hello" });
+  }
+
+  async update(req: iRequest, res: Response) {
+    const user_id = req.user_id;
+    const { username, password, name, github_username, image } = req.body;
+
+    let user = await User.findById(user_id);
+
+    if (!user) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "user doesn't exists" });
+    }
+
+    const update_filter = {
+      username: username || user.username,
+      password_hash: password
+        ? await bcrypt.hash(password, 8)
+        : user.password_hash,
+      name: name || user.name,
+      github_username: github_username || user.github_username,
+      image: image || user.image,
+    };
+
+    user = await User.updateOne({ id: user_id }, update_filter);
+
+    return res.json(user);
   }
 
   async create(req: Request, res: Response) {

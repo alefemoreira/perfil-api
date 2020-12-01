@@ -13,5 +13,6 @@ routes.post("/sessions", sessionController.create);
 
 routes.use(authMiddleware);
 routes.put("/users", userController.update);
+routes.get("/users", userController.index);
 
 export default routes;

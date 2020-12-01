@@ -1,8 +1,9 @@
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
+import { StatusCodes } from "http-status-codes";
 
-interface iRequest extends Request {
+export interface iRequest extends Request {
   user_id?: string;
 }
 
@@ -14,7 +15,9 @@ export default async (req: iRequest, res: Response, next: NextFunction) => {
   const auth_header = req.headers.authorization;
 
   if (!auth_header) {
-    return res.status(401).json({ message: "Token not provided" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Token not provided" });
   }
 
   const [, token] = auth_header.split(" ");
@@ -30,6 +33,8 @@ export default async (req: iRequest, res: Response, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    return res.status(401).json({ message: "Token invalid" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: "Token invalid" });
   }
 };
