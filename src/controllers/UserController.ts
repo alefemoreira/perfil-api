@@ -21,7 +21,7 @@ export default class UserController {
         .json({ message: "user doesn't exists" });
     }
 
-    const update_filter = {
+    const update_data = {
       username: username || user.username,
       password_hash: password
         ? await bcrypt.hash(password, 8)
@@ -31,7 +31,7 @@ export default class UserController {
       image: image || user.image,
     };
 
-    user = await User.updateOne({ id: user_id }, update_filter);
+    user = await user.updateOne(update_data);
 
     return res.json(user);
   }
