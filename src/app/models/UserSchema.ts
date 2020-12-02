@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -19,6 +19,10 @@ userSchema.methods.generateToken = function () {
   return jwt.sign({ id: this.id }, app_secret);
 };
 
+userSchema.statics.findAll = function () {
+  return this.find({});
+};
+
 export interface iUser {
   username: string;
   password_hash: string;
@@ -32,4 +36,11 @@ export interface iUserBaseDocument extends iUser, Document {
   generateToken(): string;
 }
 
-export default mongoose.model<iUserBaseDocument>("User", userSchema);
+export interface iUSerModel extends Model<iUserBaseDocument> {
+  findAll(): Promise<Array<iUserBaseDocument>>;
+}
+
+export default mongoose.model<iUserBaseDocument, iUSerModel>(
+  "User",
+  userSchema
+);

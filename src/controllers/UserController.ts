@@ -5,8 +5,10 @@ import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
 
 export default class UserController {
-  index(req: Request, res: Response) {
-    res.json({ message: "hello" });
+  async index(req: Request, res: Response) {
+    const users = await User.findAll();
+
+    res.json(users);
   }
 
   async update(req: iRequest, res: Response) {
